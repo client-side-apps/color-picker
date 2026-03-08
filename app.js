@@ -14,6 +14,7 @@ const themeToggleBtn = document.getElementById('theme-toggle');
 const colorHistoryContainer = document.getElementById('color-history');
 const clearHistoryBtn = document.getElementById('clear-history');
 const historyTemplate = document.getElementById('history-item-template');
+const eyeDropperBtn = document.getElementById('eyedropper-btn');
 
 // State
 let toastTimeout;
@@ -52,6 +53,22 @@ function init() {
             document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
         }
     });
+
+    if (window.EyeDropper) {
+        eyeDropperBtn.addEventListener('click', async () => {
+            try {
+                const eyeDropper = new EyeDropper();
+                const result = await eyeDropper.open();
+                colorInput.value = result.sRGBHex;
+                updateValues(result.sRGBHex);
+                addToHistory(result.sRGBHex);
+            } catch (err) {
+                console.log('EyeDropper canceled or failed', err);
+            }
+        });
+    } else if (eyeDropperBtn) {
+        eyeDropperBtn.style.display = 'none';
+    }
 
     // Initial values
     updateValues(colorInput.value);
