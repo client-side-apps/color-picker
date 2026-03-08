@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header>
+        <h1>Color Picker</h1>
+        <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg id="theme-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </header>
+
+    <main>
+        <section class="picker-section">
+            <label for="color-input" class="visually-hidden">Choose a color</label>
+            <div class="color-preview" id="color-preview">
+                <input type="color" id="color-input" value="#3498db" aria-label="Color Selection">
+            </div>
+            
+            <div class="values-container">
+                <div class="value-group">
+                    <label for="hex-value">HEX</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="hex-value" value="#3498db" readonly>
+                        <button class="copy-btn" data-target="hex-value" aria-label="Copy HEX value" title="Copy">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="value-group">
+                    <label for="rgb-value">RGB</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="rgb-value" value="rgb(52, 152, 219)" readonly>
+                        <button class="copy-btn" data-target="rgb-value" aria-label="Copy RGB value" title="Copy">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="value-group">
+                    <label for="hsl-value">HSL</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="hsl-value" value="hsl(204, 70%, 53%)" readonly>
+                        <button class="copy-btn" data-target="hsl-value" aria-label="Copy HSL value" title="Copy">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <h2>Recent Colors</h2>
+            <div id="color-history" class="color-history" role="list" aria-label="Recently selected colors">
+                <!-- History items will be populated by JS -->
+            </div>
+            <button id="clear-history" class="secondary-btn" hidden>Clear History</button>
+        </section>
+    </main>
+
+    <dialog id="toast" class="toast">
+        <p id="toast-message">Copied to clipboard!</p>
+    </dialog>
+
+    <template id="history-item-template">
+        <button class="history-item" role="listitem" title="Select color">
+            <span class="history-color-swatch"></span>
+            <span class="history-color-value"></span>
+        </button>
+    </template>
+
+    <script src="app.js" type="module"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.error('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
